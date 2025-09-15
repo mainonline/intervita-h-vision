@@ -1,0 +1,104 @@
+app = 'intervita-vision'
+primary_region = 'iad'
+
+# Keep the kill timeout for graceful shutdown
+kill_timeout = "60s"
+
+[build]
+  dockerfile = "Dockerfile"
+  ignorefile = ".dockerignore"
+
+[env]
+  PYTHONUNBUFFERED = '1'
+
+[[vm]]
+  memory = '4096mb'
+  cpu_kind = 'shared'
+  cpus = 2
+
+[deploy]
+  strategy = "bluegreen"
+
+# Health checks
+[[services.tcp_checks]]
+  interval = "10s"
+  timeout = "2s"
+  grace_period = "5s"
+  port = 8081
+
+# Autoscaling configuration
+[services]
+  http_checks = []
+  internal_port = 8081
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+  
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "2s"
+
+[experimental]
+  auto_rollback = true
+
+[metrics]
+  port = 8081
+  path = "/metrics"
+
+# Machine autoscaling 
+[scale]
+  count = 1
+  memory = 4096
+  cpu = 2
+
+# Scale up when CPU hits 75% utilization
+[[scale.rules]]
+  metric = "cpu"
+  trigger.utilization = 75
+  delta = 1
+  duration = "1m"
+  min = 1
+  max = 4
+
+# Scale up when memory hits 75% utilization
+[[scale.rules]]
+  metric = "memory"
+  trigger.utilization = 75
+  delta = 1
+  duration = "1m"
+  min = 1
+  max = 4
+
+# Scale down when CPU is under 30%
+[[scale.rules]]
+  metric = "cpu"
+  trigger.utilization = 30
+  delta = -1
+  duration = "2m"
+  min = 1
+  max = 4
+
+# Scale down when memory is under 30%
+[[scale.rules]]
+  metric = "memory"
+  trigger.utilization = 30
+  delta = -1
+  duration = "2m"
+  min = 1
+  max = 4

@@ -1,0 +1,16 @@
+fly.toml
+fly.staging.toml
+docker-compose.yml
+docker-compose.prod.yml
+.pytest_cache/
+.git/
+.env
+.env.example
+__pycache__/
+staticfiles/
+media/*
+KMS/*
+!media/default.png
+managestate.json
+package.json
+README.md

@@ -1,0 +1,6 @@
+.env.local
+KMS/*
+.env
+venv/
+__pycache__/
+
