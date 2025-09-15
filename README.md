@@ -1,6 +1,11 @@
 # Intervita Vision - AI Interview Agent
 
 > **Built for the [Code with Kiro Hackathon](https://kiro.devpost.com/)
+>
+> ## 🔗 Repository Links
+
+- **Main Application**: [https://github.com/mainonline/intervita-h-app](https://github.com/mainonline/intervita-h-app)
+- **Vision Agent**: [https://github.com/mainonline/intervita-h-vision](https://github.com/mainonline/intervita-h-vision)
 
 An AI-powered voice and video interview agent built on LiveKit that conducts real-time interviews with candidates, combining voice interaction with visual analysis through camera feeds.
 git
